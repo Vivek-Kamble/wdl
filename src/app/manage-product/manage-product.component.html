@@ -1,0 +1,81 @@
+
+<!-- <input type="text" class="form-control col-md-5" (keyup)="searchByName()" [(ngModel)]="productName" placeholder="Enter Name to search" style="display: inline-block"> -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Description</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of products; index as i">
+            <td>{{i+1}}</td>
+            <td> {{product.name}} </td>
+            <td> {{product.price}} </td>
+            <td> {{product.rating}} </td>
+            <td>{{product.description}}</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal" (click)="getProductToUpdate(i)">Update</button>
+                <button class="btn btn-danger ml-5" (click)="deleteProduct(product._id)">Delete</button>
+            </td>
+        </tr>
+        <!-- <div style="background-color: black;height: 400px;position: relative;top:-200px;"></div> -->  
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">        
+        <form #f="ngForm" (ngSubmit)="updateProduct(f)">
+            <div class="form-group">
+                <input type="text" minlength="3" class="form-control" placeholder="Enter Name" [ngModel]="productToUpdate?.name" #name="ngModel" pattern="[A-Za-z]*$" ngModel name="name" #productName="ngModel" required>
+            </div>
+            <div class="alert alert-danger" *ngIf="productName.touched && productName.invalid">
+                <div *ngIf="productName.errors.required">required</div>
+                <div *ngIf="productName.errors.minlength">minimum length is 5</div>
+                <div *ngIf="productName.errors.pattern">only alphabets</div>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" [ngModel]="productToUpdate?.price" #price="ngModel" pattern="[0-9]+" ngModel name="price" #productPrice="ngModel" required>
+            </div>
+            <div class="alert alert-danger" *ngIf="productPrice.touched && productPrice.invalid">
+                price required
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" [ngModel]="productToUpdate?.rating" #rating="ngModel" placeholder="Enter Rating" ngModel pattern="[0-9]+" min="0" max="10" name="rating" #productRating="ngModel" required> 
+            </div>
+            <div class="alert alert-danger" *ngIf="productRating.touched && productRating.invalid">
+                <div *ngIf="productRating.invalid">value between 0 and 10</div>
+            </div>
+            <div class="form-group">
+                <input type="field" class="form-control" [ngModel]="productToUpdate?.description" #description="ngModel" placeholder="Enter Description" pattern="[A-Za-z]*$" ngModel name="description" #productDesc="ngModel" required>
+            </div>
+            <div class="alert alert-danger" *ngIf="productDesc.touched && productDesc.invalid">
+                <div *ngIf="productDesc.errors.required">required</div>
+                <div *ngIf="productDesc.errors.minlength">minimum length is 5</div>
+                <div *ngIf="productDesc.errors.pattern">only alphabets</div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Update Product</button>
+            </div>
+        </form>
+        <div class="alert alert-success mt-2" [hidden]="messageStatusHidden">
+            Updated Successfully
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="container">
+    <form #f="ngForm" (ngSubmit)="addProduct(f)">
+        <div class="form-group">
+            <input type="text" minlength="3" class="form-control" placeholder="Enter Name" pattern="[A-Za-z]*$" ngModel name="name" #productName="ngModel" required>
+        </div>
+        <div class="alert alert-danger" *ngIf="productName.touched && productName.invalid">
+            <div *ngIf="productName.errors.required">required</div>
+            <div *ngIf="productName.errors.minlength">minimum length is 5</div>
+            <div *ngIf="productName.errors.pattern">only alphabets</div>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Enter Price" pattern="[0-9]+" ngModel name="price" #productPrice="ngModel" required>
+        </div>
+        <div class="alert alert-danger" *ngIf="productPrice.touched && productPrice.invalid">
+            price required
+        </div>
+        <div class="form-group">
+            <input type="number" class="form-control" placeholder="Enter Rating" ngModel pattern="[0-9]+" min="0" max="10" name="rating" #productRating="ngModel" required> 
+        </div>
+        <div class="alert alert-danger" *ngIf="productRating.touched && productRating.invalid">
+            <div *ngIf="productRating.invalid">value between 0 and 10</div>
+        </div>
+        <div class="form-group">
+            <input type="field" class="form-control" placeholder="Enter Description" ngModel name="description" #productDesc="ngModel" required>
+        </div>
+        <div class="alert alert-danger" *ngIf="productDesc.touched && productDesc.invalid">
+            <div *ngIf="productDesc.errors.required">required</div>
+            <div *ngIf="productDesc.errors.minlength">minimum length is 5</div>
+            <div *ngIf="productDesc.errors.pattern">only alphabets</div>
+        </div>
+        <button  class="btn btn-primary" [disabled]="f.invalid">Add Product</button>
+    </form>
+    <div class="alert alert-success mt-2" [hidden]="!messageStatusHidden">
+        Product Added Successfully
+    </div>
+</div>
